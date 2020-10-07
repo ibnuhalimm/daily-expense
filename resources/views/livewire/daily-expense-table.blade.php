@@ -119,6 +119,7 @@
                 </div>
             @endif
 
+            <form action="#" method="post" wire:submit.prevent="storeExpense">
             <div class="col-span-6 sm:col-span-4 mb-6">
                 <x-jet-label for="date" value="{{ __('Date') }}" />
                 <div class="w-full md:w-2/3 flex items-center justify-between mt-1">
@@ -170,11 +171,11 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('is_create_modal_show')" wire:loading.attr="disabled" wire:target="storeExpense">
+            <x-jet-secondary-button type="button" wire:click="$toggle('is_create_modal_show')" wire:loading.attr="disabled" wire:target="storeExpense">
                 Cancel
             </x-jet-secondary-button>
 
-            <x-jet-button class="ml-2" wire:click="storeExpense" wire:loading.attr="disabled" wire:target="storeExpense">
+            <x-jet-button type="submit" class="ml-2" wire:loading.attr="disabled" wire:target="storeExpense">
                 <span wire:loading.remove wire:target="storeExpense">
                     Save
                 </span>
@@ -182,6 +183,7 @@
                     Saving...
                 </span>
             </x-jet-button>
+            </form>
         </x-slot>
     </x-jet-dialog-modal>
 
