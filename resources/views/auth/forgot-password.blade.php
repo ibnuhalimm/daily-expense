@@ -25,7 +25,12 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <x-jet-button>
+                @if (Route::has('login'))
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                        {{ __('Back to Login') }}
+                    </a>
+                @endif
+                <x-jet-button class="ml-4">
                     {{ __('Email Password Reset Link') }}
                 </x-jet-button>
             </div>
