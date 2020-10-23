@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-4 md:mb-8">
             <div class="grid grid-cols-1 md:grid-cols-3 md:gap-10">
                 <x-card-content title="Today Expense" class="mb-6 md:mb-0">
                     <div class="flex items-start justify-center">
@@ -34,5 +34,7 @@
                 </x-card-content>
             </div>
         </div>
+
+        @livewire('daily-expense-graph')
     </div>
 </x-app-layout>

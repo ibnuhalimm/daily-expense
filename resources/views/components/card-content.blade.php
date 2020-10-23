@@ -8,7 +8,7 @@
                     {{ $title }}
                 </h3>
             @endif
-            <div class="mt-6 flex flex-col md:flex-row items-center justify-between">
+            <div class="mt-6">
                 {{ $slot }}
             </div>
         </div>
