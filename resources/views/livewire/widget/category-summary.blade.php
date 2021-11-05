@@ -32,7 +32,7 @@
                 <div class="mt-6">
                     @foreach ($categories as $category)
                         @php
-                            $percentage_value = round($category->total / $sumOfCategory * 100, 2);
+                            $percentage_value = round($category->total_amount / $sumOfTotalAmount * 100, 2);
                         @endphp
                         <div class="mb-5 py-2 border border-dashed border-t-0 border-r-0 border-l-0 border-gray-400">
                             <div class="flex flex-row items-center justify-between">
@@ -52,9 +52,6 @@
                                 <div class="absolute -top-1 right-0 text-sm font-bold">
                                     <span class="relative top-[.1rem]">
                                         {{ (int) $percentage_value }}%
-                                        <span class="ml-1 text-gray-700">
-                                            ({{ number_format($category->total) }})
-                                        </span>
                                     </span>
                                 </div>
                             </div>
