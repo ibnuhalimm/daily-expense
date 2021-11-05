@@ -11,12 +11,14 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Styles -->
+        @stack('top_css')
         <link rel="stylesheet" href="{{ asset('css/app.css?_=' . rand()) }}">
 
         @livewireStyles
 
         <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.js" defer></script>
+        @livewireScripts
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -38,6 +40,5 @@
         @stack('modals')
 
         @stack('bottom_js')
-        @livewireScripts
     </body>
 </html>

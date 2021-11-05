@@ -1,6 +1,6 @@
 <div class="relative">
     <select {{ $attributes->merge([
-        'class' => 'shadow border rounded-md w-full appearance-none py-2 px-3 text-gray-600 leading-tight focus:outline-none text-md bg-white'
+        'class' => 'shadow border rounded-md w-full appearance-none py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-md bg-white'
     ]) }}>
         {{ $slot }}
     </select>

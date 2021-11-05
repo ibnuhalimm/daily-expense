@@ -9,4 +9,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group( function () {
     Route::get('/expense', function() {
         return view('expense');
     })->name('expense');
+
+    Route::get('/categories', function() {
+        return view('categories');
+    })->name('categories');
 });

@@ -6,8 +6,8 @@
                     <h3 class="text-lg font-medium text-gray-900">
                         Daily Expense Data
                     </h3>
-                    <div class="mt-6 flex flex-col md:flex-row items-center justify-between">
-                        <div class="w-full md:w-2/3 mb-4 sm:mb-0">
+                    <div class="mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div class="w-full md:w-2/3">
                             <x-jet-button wire:click="createExpense">
                                 New Expense
                             </x-jet-button>
@@ -55,13 +55,14 @@
                                 <x-th class="w-20 pl-6">#</x-th>
                                 <x-th>Description</x-th>
                                 <x-th>Amount</x-th>
+                                <x-th>Category</x-th>
                                 <x-th class="w-32">&nbsp;</x-th>
                             </x-tr-head>
                         </thead>
                         <tbody>
                             @if ($expenses->isEmpty())
                                 <x-tr-body class="hover:bg-gray-100">
-                                    <td class="py-3 px-6" colspan="4">
+                                    <td class="py-3 px-6" colspan="5">
                                         No data available
                                     </td>
                                 </x-tr-body>
@@ -74,7 +75,12 @@
                                         <td class="py-2 px-1">
                                             {{ $expense->description }}
                                         </td>
-                                        <td class="py-2 px-1">Rp {{ number_format($expense->amount, 0, ',', '.') }},-</td>
+                                        <td class="py-2 px-1">
+                                            Rp {{ number_format($expense->amount, 0, ',', '.') }},-
+                                        </td>
+                                        <td class="py-2 px-1">
+                                            {{ $expense->category->name }}
+                                        </td>
                                         <td class="py-2 px-1 pr-6">
                                             <x-table-button type="button" wire:click="editExpense({{ $expense->id }})">
                                                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -106,7 +112,7 @@
     </div>
 
 
-    <x-jet-dialog-modal wire:model="is_create_modal_show" class="md:w-1/3 modal-oi">
+    <x-jet-dialog-modal wire:model="is_create_modal_show" maxWidth="md">
         <x-slot name="title">
             @if ($is_edit_mode === true) Edit Expense @else New Expense @endif
         </x-slot>
@@ -122,7 +128,7 @@
             <form action="#" method="post" wire:submit.prevent="storeExpense">
             <div class="col-span-6 sm:col-span-4 mb-6">
                 <x-jet-label for="date" value="{{ __('Date') }}" />
-                <div class="w-full md:w-2/3 flex items-center justify-between mt-1">
+                <div class="w-full flex items-center justify-between mt-1">
                     <div class="w-1/4 mr-1">
                         <x-select wire:model.defer="day">
                             <option value="" disabled>- Day -</option>
@@ -168,6 +174,27 @@
                 <x-jet-input id="amount" type="number" class="mt-1 block w-full" wire:model.defer="amount" autocomplete="amount" />
                 <x-jet-input-error for="amount" class="mt-2" />
             </div>
+            <div class="col-span-6 sm:col-span-4 mb-6">
+                <x-jet-label for="category_id" value="{{ __('Category') }}" />
+                <div wire:ignore>
+                    <x-form.select wire:model.defer="category_id" id="category_id">
+                        <option value="">- Category -</option>
+
+                        @if (!empty($category_name))
+                            <option value="{{ $category_id }}" selected>
+                                {{ $category_name }}
+                            </option>
+                        @endif
+
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </x-form.select>
+                </div>
+                <x-jet-input-error for="category_id" class="mt-2" />
+            </div>
         </x-slot>
 
         <x-slot name="footer">
@@ -188,7 +215,7 @@
     </x-jet-dialog-modal>
 
 
-    <x-jet-confirmation-modal wire:model="is_delete_modal_show">
+    <x-jet-confirmation-modal wire:model="is_delete_modal_show" maxWidth="sm">
         <x-slot name="title">
             Delete Expense
         </x-slot>
@@ -220,3 +247,31 @@
     </x-jet-confirmation-modal>
 
 </div>
+
+
+@push('top_css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css">
+@endpush
+
+@push('bottom_js')
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script>
+        $('#category_id').select2({
+            width: 'resolve'
+        });
+
+        $('#category_id').on('select2:select', function (e) {
+            const data = e.params.data;
+            @this.set('category_id', data.id);
+        });
+
+        $('#category_id').on('select2:unselect', function (e) {
+            @this.set('category_id', null);
+        });
+
+        Livewire.on('expenseFetched', function (category) {
+            $('#category_id').trigger('change');
+        });
+    </script>
+@endpush

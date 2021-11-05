@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Category;
 use App\Models\Expense;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -24,11 +25,46 @@ class DailyExpenseTable extends Component
 
     public $is_edit_mode;
     public $expense_id;
+    public $category_id;
+    public $category_name;
     public $day;
     public $month;
     public $year;
     public $description;
     public $amount;
+
+
+    protected $rules = [
+        'category_id' => [
+            'required'
+        ],
+        'day' => [
+            'required'
+        ],
+        'month' => [
+            'required'
+        ],
+        'year' => [
+            'required'
+        ],
+        'description' => [
+            'required', 'string', 'min:3', 'max:100'
+        ],
+        'amount' => [
+            'required'
+        ]
+    ];
+
+
+    protected $validationAttributes = [
+        'category_id' => 'Category Name'
+    ];
+
+
+    protected $listeners = [
+        'expenseFetched' => 'setCategoryData'
+    ];
+
 
     /**
      * Initialize properties data
@@ -47,22 +83,6 @@ class DailyExpenseTable extends Component
     }
 
     /**
-     * Form validation rules
-     *
-     * @return array
-     */
-    private function formValidationRules()
-    {
-        return [
-            'day' => [ 'required' ],
-            'month' => [ 'required' ],
-            'year' => [ 'required' ],
-            'description' => [ 'required', 'string', 'min:3', 'max:100' ],
-            'amount' => [ 'required' ]
-        ];
-    }
-
-    /**
      * Reset description, amount, expense_id property
      * when user cancel to store/update expense
      *
@@ -71,7 +91,7 @@ class DailyExpenseTable extends Component
     public function updatedIsCreateModalShow($value)
     {
         if ($value === false) {
-            $this->reset('description', 'amount');
+            $this->reset('description', 'amount', 'category_id', 'category_name');
 
             if ($this->is_edit_mode === true) {
                 $this->reset('expense_id');
@@ -97,13 +117,14 @@ class DailyExpenseTable extends Component
      */
     public function storeExpense()
     {
-        $this->validate($this->formValidationRules());
+        $this->validate();
 
         try {
 
             if ($this->is_edit_mode === true) {
                 Expense::where('id', $this->expense_id)
                     ->update([
+                        'category_id' => $this->category_id,
                         'date' => $this->year . '-' . $this->month . '-' . $this->day,
                         'description' => $this->description,
                         'amount' => $this->amount
@@ -111,6 +132,7 @@ class DailyExpenseTable extends Component
 
             } else {
                 Expense::create([
+                    'category_id' => $this->category_id,
                     'date' => $this->year . '-' . $this->month . '-' . $this->day,
                     'description' => $this->description,
                     'amount' => $this->amount
@@ -122,7 +144,7 @@ class DailyExpenseTable extends Component
             $this->filter_month = $this->month;
             $this->filter_year = $this->year;
 
-            $this->reset('description', 'amount');
+            $this->reset('description', 'amount', 'category_id', 'category_name');
 
             $this->is_create_modal_show = false;
 
@@ -133,6 +155,14 @@ class DailyExpenseTable extends Component
         }
     }
 
+
+    public function setCategoryData(Category $category)
+    {
+        $this->category_id = $category->id;
+        $this->category_name = $category->name;
+    }
+
+
     /**
      * Show edit expense modal
      *
@@ -141,12 +171,16 @@ class DailyExpenseTable extends Component
      */
     public function editExpense($expense_id)
     {
-        $expense = Expense::findOrFail($expense_id);
+        $expense = Expense::where('id', $expense_id)->with('category')->firstOrFail();
+
+        $this->emit('expenseFetched', $expense->category);
 
         $this->is_edit_mode = true;
         $this->is_create_modal_show = true;
 
         $this->expense_id = $expense->id;
+        $this->category_id = $expense->category_id;
+        $this->category_name = $expense->category->name;
         $this->day = $expense->date->format('d');
         $this->month = $expense->date->format('m');
         $this->year = $expense->date->format('Y');
@@ -205,11 +239,16 @@ class DailyExpenseTable extends Component
     {
         $filter_date = $this->filter_year . '-' . $this->filter_month . '-' . $this->filter_day;
 
-        $data = [
-            'expenses' => Expense::whereDate('date', $filter_date)->orderBy('created_at', 'desc')->paginate(20),
-            'total_amount' => Expense::whereDate('date', $filter_date)->sum('amount')
-        ];
+        $expenses = Expense::query()
+                        ->whereDate('date', $filter_date)
+                        ->latest()
+                        ->with('category')
+                        ->paginate(20);
 
-        return view('livewire.daily-expense-table', $data);
+        $total_amount = Expense::whereDate('date', $filter_date)->sum('amount');
+
+        $categories = Category::orderBy('name', 'asc')->get();
+
+        return view('livewire.daily-expense-table', compact('expenses', 'total_amount', 'categories'));
     }
 }

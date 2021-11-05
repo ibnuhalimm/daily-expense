@@ -35,6 +35,10 @@
             </div>
         </div>
 
+
         @livewire('daily-expense-graph')
+
+        @livewire('widget.category-summary')
+
     </div>
 </x-app-layout>

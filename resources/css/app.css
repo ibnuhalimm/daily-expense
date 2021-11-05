@@ -1,3 +1,58 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+* -------------------------------------
+* Select2 Styles
+* -------------------------------------
+*/
+.select2.select2-container.select2-container--default {
+    @apply w-full !important;
+}
+
+.select2-container .select2-selection--single,
+.select2-container .select2-selection--multiple {
+    @apply w-full h-10 mt-1 !important;
+}
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple,
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    @apply rounded-md shadow-sm !important;
+    @apply border border-solid border-gray-300 !important;
+    @apply focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    @apply leading-10 text-gray-900 text-sm !important;
+}
+.select2-container .select2-selection--single .select2-selection__rendered {
+    @apply pl-3 !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    @apply h-10 w-9 top-1 !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__clear {
+    @apply h-10 mr-8 !important;
+    @apply border-0 outline-none focus:outline-none !important;
+    @apply bg-transparent !important;
+}
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    @apply px-3 py-1 h-10 !important;
+}
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    @apply border-indigo-300 ring ring-indigo-200 ring-opacity-50 !important;
+}
+.select2-container .select2-selection--multiple .select2-selection__rendered {
+    @apply px-3 !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #888 transparent transparent transparent !important;
+    border-style: solid !important;
+    border-width: 5px 4px 0 4px !important;
+}
+.select2-dropdown {
+    @apply shadow-lg !important;
+}
+.select2-results__option {
+    @apply px-3 py-2 !important;
+}

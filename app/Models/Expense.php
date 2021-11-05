@@ -29,6 +29,16 @@ class Expense extends Model
     ];
 
     /**
+     * Get category of expense
+     *
+     * @return mixed
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    /**
      * Query to get total expense today
      *
      * @param \Illuminate\Database\Query\Builder $query
