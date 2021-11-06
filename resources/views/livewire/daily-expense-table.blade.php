@@ -6,43 +6,21 @@
                     <h3 class="text-lg font-medium text-gray-900">
                         Daily Expense Data
                     </h3>
-                    <div class="mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div class="w-full md:w-2/3">
+                    <div class="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
+                        <div class="w-full sm:w-1/3 md:w-2/3">
                             <x-jet-button wire:click="createExpense">
                                 New Expense
                             </x-jet-button>
                         </div>
-                        <div class="w-full md:w-1/3">
-                            <div class="flex items-center justify-between md:justify-end">
-                                <div class="w-1/4 mr-1">
-                                    <x-select wire:model.lazy="filter_day">
-                                        <option value="" disabled>- Day -</option>
-                                        @for ($day = 1; $day <= 31; $day++)
-                                            <option value="{{ ($day < 10) ? '0' . $day : $day }}">
-                                                {{ $day }}
-                                            </option>
-                                        @endfor
-                                    </x-select>
+                        <div class="w-full sm:w-2/3 md:w-1/3">
+                            <div class="flex flex-row item-center justify-between gap-4">
+                                <div class="w-1/3 text-right">
+                                    <span class="relative top-3">
+                                        Date:
+                                    </span>
                                 </div>
-                                <div class="w-1/3 mx-1">
-                                    <x-select wire:model.lazy="filter_month">
-                                        <option value="" disabled>- Month -</option>
-                                        @for ($month = 1; $month <= 12; $month++)
-                                            <option value="{{ ($month < 10) ? '0' . $month : $month }}">
-                                                {{ strftime('%B', strtotime('2020-' . $month . '-01')) }}
-                                            </option>
-                                        @endfor
-                                    </x-select>
-                                </div>
-                                <div class="w-1/3 ml-1">
-                                    <x-select wire:model.lazy="filter_year">
-                                        <option value="" disabled>- Year -</option>
-                                        @for ($year = date('Y'); $year >= (date('Y') - 5); $year--)
-                                            <option value="{{ $year }}">
-                                                {{ $year }}
-                                            </option>
-                                        @endfor
-                                    </x-select>
+                                <div class="w-full" wire:ignore>
+                                    <x-jet-input id="filter_date_range" type="date" class="mt-1 block w-full" wire:model.defer="filter_date_range" autocomplete="description" />
                                 </div>
                             </div>
                         </div>
@@ -250,13 +228,36 @@
 
 
 @push('top_css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css">
 @endpush
 
 @push('bottom_js')
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script>
+        $('#filter_date_range').flatpickr({
+            mode: 'range',
+            dateFormat: 'Y-m-d',
+            disableMobile: true,
+            onChange: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length === 1) {
+                    instance.config.minDate = moment(selectedDates[0]).subtract(1, 'month').format('YYYY-MM-DD');
+                    instance.config.maxDate = moment(selectedDates[0]).add(1, 'month').format('YYYY-MM-DD');
+
+                } else if (selectedDates.length === 2) {
+                    @this.set('filter_date_range', dateStr);
+
+                    instance.config.minDate = null;
+                    instance.config.maxDate = null;
+
+                }
+            }
+        });
+
+
         $('#category_id').select2({
             width: 'resolve'
         });

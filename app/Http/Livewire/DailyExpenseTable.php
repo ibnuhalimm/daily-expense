@@ -19,9 +19,7 @@ class DailyExpenseTable extends Component
     public $is_create_modal_show;
     public $is_delete_modal_show;
 
-    public $filter_day;
-    public $filter_month;
-    public $filter_year;
+    public $filter_date_range;
 
     public $is_edit_mode;
     public $expense_id;
@@ -77,9 +75,8 @@ class DailyExpenseTable extends Component
         $this->is_delete_modal_show = false;
 
         $this->is_edit_mode = false;
-        $this->filter_day = $this->day = date('d');
-        $this->filter_month = $this->month = date('m');
-        $this->filter_year = $this->year = date('Y');
+
+        $this->filter_date_range = now()->format('Y-m-d') . ' to ' . now()->addDay()->format('Y-m-d');
     }
 
     /**
@@ -139,10 +136,6 @@ class DailyExpenseTable extends Component
                 ]);
 
             }
-
-            $this->filter_day = $this->day;
-            $this->filter_month = $this->month;
-            $this->filter_year = $this->year;
 
             $this->reset('description', 'amount', 'category_id', 'category_name');
 
@@ -237,15 +230,17 @@ class DailyExpenseTable extends Component
      */
     public function render()
     {
-        $filter_date = $this->filter_year . '-' . $this->filter_month . '-' . $this->filter_day;
+        $exDateRange = explode(' to ', $this->filter_date_range);
+        $dateStart = $exDateRange[0];
+        $dateEnd = end($exDateRange);
 
         $expenses = Expense::query()
-                        ->whereDate('date', $filter_date)
+                        ->whereBetween('date', [$dateStart, $dateEnd])
                         ->latest()
                         ->with('category')
                         ->paginate(20);
 
-        $total_amount = Expense::whereDate('date', $filter_date)->sum('amount');
+        $total_amount = Expense::whereBetween('date', [$dateStart, $dateEnd])->sum('amount');
 
         $categories = Category::orderBy('name', 'asc')->get();
 
