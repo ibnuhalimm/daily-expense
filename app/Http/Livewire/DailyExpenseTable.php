@@ -178,7 +178,7 @@ class DailyExpenseTable extends Component
         $this->expense_id = $expense->id;
         $this->category_id = $expense->category_id;
         $this->category_name = $expense->category->name;
-        $this->store_date = $expense->date;
+        $this->store_date = $expense->date->format('Y-m-d');
         $this->description = $expense->description;
         $this->amount = $expense->amount;
     }
