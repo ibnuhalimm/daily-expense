@@ -20,7 +20,7 @@
                                     </span>
                                 </div>
                                 <div class="w-full" wire:ignore>
-                                    <x-jet-input id="filter_date_range" type="date" class="mt-1 block w-full" wire:model.defer="filter_date_range" autocomplete="description" />
+                                    <x-jet-input id="filter_date_range" type="date" class="mt-1 block w-full" wire:model.defer="filter_date_range" autocomplete="off" />
                                 </div>
                             </div>
                         </div>
@@ -90,7 +90,7 @@
     </div>
 
 
-    <x-jet-dialog-modal wire:model="is_create_modal_show" maxWidth="md">
+    <x-jet-dialog-modal wire:model="is_create_modal_show" maxWidth="sm">
         <x-slot name="title">
             @if ($is_edit_mode === true) Edit Expense @else New Expense @endif
         </x-slot>
@@ -106,8 +106,11 @@
             <form action="#" method="post" wire:submit.prevent="storeExpense">
             <div class="col-span-6 sm:col-span-4 mb-6">
                 <x-jet-label for="date" value="{{ __('Date') }}" />
-                <div class="w-full flex items-center justify-between mt-1">
-                    <div class="w-1/4 mr-1">
+                <div class="w-full mt-1">
+                    <div wire:ignore>
+                        <x-jet-input id="store_date" type="date" class="mt-1 block w-full" wire:model.defer="store_date" autocomplete="off" />
+                    </div>
+                    {{-- <div class="w-1/4 mr-1">
                         <x-select wire:model.defer="day">
                             <option value="" disabled>- Day -</option>
                             @for ($day = 1; $day <= 31; $day++)
@@ -136,11 +139,12 @@
                                 </option>
                             @endfor
                         </x-select>
-                    </div>
+                    </div> --}}
                 </div>
-                <x-jet-input-error for="day" class="mt-2" />
+                <x-jet-input-error for="store_date" class="mt-2" />
+                {{-- <x-jet-input-error for="day" class="mt-2" />
                 <x-jet-input-error for="month" class="mt-2" />
-                <x-jet-input-error for="year" class="mt-2" />
+                <x-jet-input-error for="year" class="mt-2" /> --}}
             </div>
             <div class="col-span-6 sm:col-span-4 mb-6">
                 <x-jet-label for="description" value="{{ __('Description') }}" />
@@ -249,11 +253,21 @@
 
                 } else if (selectedDates.length === 2) {
                     @this.set('filter_date_range', dateStr);
+                    @this.set('store_date', moment(selectedDates[0]).format('YYYY-MM-DD'));
 
                     instance.config.minDate = null;
                     instance.config.maxDate = null;
 
                 }
+            }
+        });
+
+        $('#store_date').flatpickr({
+            mode: 'single',
+            dateFormat: 'Y-m-d',
+            disableMobile: true,
+            onChange: function (selectedDates, dateStr, instance) {
+                @this.set('store_date', moment(selectedDates[0]).format('YYYY-MM-DD'));
             }
         });
 
@@ -273,6 +287,10 @@
 
         Livewire.on('expenseFetched', function (category) {
             $('#category_id').trigger('change');
+        });
+
+        Livewire.on('expenseCreated', function () {
+            $('#category_id').val(null).trigger('change');
         });
     </script>
 @endpush

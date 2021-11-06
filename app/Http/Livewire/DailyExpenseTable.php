@@ -25,9 +25,8 @@ class DailyExpenseTable extends Component
     public $expense_id;
     public $category_id;
     public $category_name;
-    public $day;
-    public $month;
-    public $year;
+
+    public $store_date;
     public $description;
     public $amount;
 
@@ -36,14 +35,8 @@ class DailyExpenseTable extends Component
         'category_id' => [
             'required'
         ],
-        'day' => [
-            'required'
-        ],
-        'month' => [
-            'required'
-        ],
-        'year' => [
-            'required'
+        'store_date' => [
+            'required', 'date_format:Y-m-d'
         ],
         'description' => [
             'required', 'string', 'min:3', 'max:100'
@@ -55,12 +48,14 @@ class DailyExpenseTable extends Component
 
 
     protected $validationAttributes = [
-        'category_id' => 'Category Name'
+        'category_id' => 'Category Name',
+        'store_date' => 'Date'
     ];
 
 
     protected $listeners = [
-        'expenseFetched' => 'setCategoryData'
+        'expenseFetched' => 'setCategoryData',
+        'expenseCreated' => 'resetCategorySelect'
     ];
 
 
@@ -77,6 +72,7 @@ class DailyExpenseTable extends Component
         $this->is_edit_mode = false;
 
         $this->filter_date_range = now()->format('Y-m-d') . ' to ' . now()->addDay()->format('Y-m-d');
+        $this->store_date = now()->format('Y-m-d');
     }
 
     /**
@@ -122,7 +118,7 @@ class DailyExpenseTable extends Component
                 Expense::where('id', $this->expense_id)
                     ->update([
                         'category_id' => $this->category_id,
-                        'date' => $this->year . '-' . $this->month . '-' . $this->day,
+                        'date' => $this->store_date,
                         'description' => $this->description,
                         'amount' => $this->amount
                     ]);
@@ -130,13 +126,14 @@ class DailyExpenseTable extends Component
             } else {
                 Expense::create([
                     'category_id' => $this->category_id,
-                    'date' => $this->year . '-' . $this->month . '-' . $this->day,
+                    'date' => $this->store_date,
                     'description' => $this->description,
                     'amount' => $this->amount
                 ]);
 
             }
 
+            $this->emit('expenseCreated');
             $this->reset('description', 'amount', 'category_id', 'category_name');
 
             $this->is_create_modal_show = false;
@@ -153,6 +150,12 @@ class DailyExpenseTable extends Component
     {
         $this->category_id = $category->id;
         $this->category_name = $category->name;
+    }
+
+
+    public function resetCategorySelect()
+    {
+        $this->reset('category_id', 'category_name');
     }
 
 
@@ -174,9 +177,7 @@ class DailyExpenseTable extends Component
         $this->expense_id = $expense->id;
         $this->category_id = $expense->category_id;
         $this->category_name = $expense->category->name;
-        $this->day = $expense->date->format('d');
-        $this->month = $expense->date->format('m');
-        $this->year = $expense->date->format('Y');
+        $this->store_date = $expense->date;
         $this->description = $expense->description;
         $this->amount = $expense->amount;
     }
