@@ -56,6 +56,7 @@ class Table extends Component
     {
         if ($value === false) {
             $this->reset('name');
+            $this->resetErrorBag();
 
             if ($this->isEditMode === true) {
                 $this->reset('categoryId');
@@ -68,6 +69,7 @@ class Table extends Component
     {
         if ($value === false) {
             $this->reset('categoryId');
+            $this->resetErrorBag();
         }
     }
 

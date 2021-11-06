@@ -85,6 +85,7 @@ class DailyExpenseTable extends Component
     {
         if ($value === false) {
             $this->reset('description', 'amount', 'category_id', 'category_name');
+            $this->resetErrorBag();
 
             if ($this->is_edit_mode === true) {
                 $this->reset('expense_id');
@@ -203,6 +204,7 @@ class DailyExpenseTable extends Component
     {
         if ($value === false) {
             $this->reset('expense_id');
+            $this->resetErrorBag();
         }
     }
 
