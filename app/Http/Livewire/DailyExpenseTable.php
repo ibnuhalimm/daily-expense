@@ -76,6 +76,16 @@ class DailyExpenseTable extends Component
     }
 
     /**
+     * Reset page while changing date filter
+     *
+     * @return void
+     */
+    public function updatingFilterDateRange()
+    {
+        $this->resetPage();
+    }
+
+    /**
      * Reset description, amount, expense_id property
      * when user cancel to store/update expense
      *
