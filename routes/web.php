@@ -14,3 +14,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group( function () {
         return view('categories');
     })->name('categories');
 });
+
+
+Route::any('register', function () {
+    abort(404);
+});

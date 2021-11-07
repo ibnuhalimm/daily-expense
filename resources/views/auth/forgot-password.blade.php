@@ -31,7 +31,7 @@
                     </a>
                 @endif
                 <x-jet-button class="ml-4">
-                    {{ __('Email Password Reset Link') }}
+                    {{ __('Email Reset Link') }}
                 </x-jet-button>
             </div>
         </form>
