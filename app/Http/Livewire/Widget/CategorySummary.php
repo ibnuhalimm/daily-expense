@@ -24,7 +24,7 @@ class CategorySummary extends Component
         $dateEnd = date('Y-m-t', strtotime($dateStart));
 
         $categories = Category::reportExpenseCategoryDateRange($dateStart, $dateEnd);
-        $sumOfTotalAmount = $categories->sum('total_amount');
+        $sumOfTotalAmount = $categories->sum('amount_sum');
 
         return view('livewire.widget.category-summary', compact('categories', 'sumOfTotalAmount'));
     }

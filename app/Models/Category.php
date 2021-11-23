@@ -32,17 +32,17 @@ class Category extends Model
         $expenseTable = (new Expense())->getTable();
         $categoryTable = (new Category())->getTable();
 
-        $query = DB::table($expenseTable)
-                ->select(DB::raw("
-                        {$expenseTable}.category_id,
-                        COUNT({$expenseTable}.id) AS total,
-                        SUM({$expenseTable}.amount) AS total_amount,
-                        {$categoryTable}.name AS category_name"))
-                ->join($categoryTable, "{$expenseTable}.category_id", '=', "{$categoryTable}.id")
-                ->whereBetween("{$expenseTable}.date", [$dateStart, $dateEnd])
-                ->groupBy(DB::raw("{$expenseTable}.category_id, {$categoryTable}.name"))
-                ->orderBy("{$categoryTable}.name", 'asc');
+        $expenses = DB::table($expenseTable)
+                    ->select(DB::raw("{$expenseTable}.category_id, SUM({$expenseTable}.amount) AS amount_sum"))
+                    ->whereBetween("{$expenseTable}.date", [$dateStart, $dateEnd])
+                    ->groupBy(DB::raw("{$expenseTable}.category_id"));
 
-        return $query->get();
+        $orderedWithCategories = DB::table($categoryTable)
+                                ->joinSub($expenses, 'expenses', function ($join) use ($categoryTable) {
+                                    $join->on("{$categoryTable}.id", '=', 'expenses.category_id');
+                                })
+                                ->orderBy("expenses.amount_sum", 'desc');
+
+        return $orderedWithCategories->get();
     }
 }

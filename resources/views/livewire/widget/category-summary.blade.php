@@ -32,15 +32,15 @@
                 <div class="mt-6">
                     @foreach ($categories as $category)
                         @php
-                            $percentage_value = round($category->total_amount / $sumOfTotalAmount * 100, 2);
+                            $percentage_value = round($category->amount_sum / $sumOfTotalAmount * 100, 2);
                         @endphp
                         <div class="mb-5 py-2 border border-dashed border-t-0 border-r-0 border-l-0 border-gray-400">
                             <div class="flex flex-row items-center justify-between">
                                 <div>
-                                    {{ $category->category_name }}
+                                    {{ $category->name }}
                                 </div>
                                 <div class="text-right text-sm">
-                                    IDR {{ number_format($category->total_amount, 2, ',', '.') }}
+                                    IDR {{ number_format($category->amount_sum, 2, ',', '.') }}
                                 </div>
                             </div>
                             <div class="relative">
@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="absolute -top-1 right-0 text-sm font-bold">
                                     <span class="relative top-[.1rem]">
-                                        {{ (int) $percentage_value }}%
+                                        {{ $percentage_value }}%
                                     </span>
                                 </div>
                             </div>
