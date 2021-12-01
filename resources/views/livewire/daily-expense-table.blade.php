@@ -7,20 +7,28 @@
                         Daily Expense Data
                     </h3>
                     <div class="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
-                        <div class="w-full sm:w-1/3 md:w-2/3">
+                        <div class="w-full sm:w-1/3 lg:w-1/2 xl:w-3/5">
                             <x-jet-button wire:click="createExpense">
                                 New Expense
                             </x-jet-button>
                         </div>
-                        <div class="w-full sm:w-2/3 md:w-1/3">
+                        <div class="w-full sm:w-2/3 lg:w-1/2 xl:w-2/5">
                             <div class="flex flex-row item-center justify-between gap-4">
-                                <div class="w-1/3 text-right">
-                                    <span class="relative top-3">
-                                        Date:
-                                    </span>
+                                <div class="w-1/2">
+                                    <div wire:ignore>
+                                        <x-form.select wire:model.defer="filter_category_id" id="filter_category_id">
+                                            <option value="">- All Categories -</option>
+
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endforeach
+                                        </x-form.select>
+                                    </div>
                                 </div>
-                                <div class="w-full" wire:ignore>
-                                    <x-jet-input id="filter_date_range" type="date" class="mt-1 block w-full" wire:model.defer="filter_date_range" autocomplete="off" />
+                                <div class="w-1/2" wire:ignore>
+                                    <x-jet-input type="date" wire:model.defer="filter_date_range" id="filter_date_range"  autocomplete="off" />
                                 </div>
                             </div>
                         </div>
@@ -291,6 +299,19 @@
 
         Livewire.on('expenseCreated', function () {
             $('#category_id').val(null).trigger('change');
+        });
+
+        $('#filter_category_id').select2({
+            width: 'resolve'
+        });
+
+        $('#filter_category_id').on('select2:select', function (e) {
+            const data = e.params.data;
+            @this.set('filter_category_id', data.id);
+        });
+
+        $('#filter_category_id').on('select2:unselect', function (e) {
+            @this.set('filter_category_id', null);
         });
     </script>
 @endpush

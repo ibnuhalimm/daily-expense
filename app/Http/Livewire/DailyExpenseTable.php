@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Category;
 use App\Models\Expense;
+use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -19,6 +20,7 @@ class DailyExpenseTable extends Component
     public $is_create_modal_show;
     public $is_delete_modal_show;
 
+    public $filter_category_id;
     public $filter_date_range;
 
     public $is_edit_mode;
@@ -86,6 +88,16 @@ class DailyExpenseTable extends Component
     }
 
     /**
+     * Reset page while changing category filter
+     *
+     * @return void
+     */
+    public function updatingFilterCategoryId()
+    {
+        $this->resetPage();
+    }
+
+    /**
      * Reset description, amount, expense_id property
      * when user cancel to store/update expense
      *
@@ -146,6 +158,11 @@ class DailyExpenseTable extends Component
 
             $this->emit('expenseCreated');
             $this->reset('description', 'amount', 'category_id', 'category_name');
+            $this->reset('filter_category_id');
+
+            $this->filter_date_range = Carbon::createFromDate($this->store_date)->format('Y-m-d')
+                                        . ' to '
+                                        . Carbon::createFromDate($this->store_date)->addDay()->format('Y-m-d');
 
             $this->is_create_modal_show = false;
 
@@ -168,7 +185,6 @@ class DailyExpenseTable extends Component
     {
         $this->reset('category_id', 'category_name');
     }
-
 
     /**
      * Show edit expense modal
@@ -248,12 +264,16 @@ class DailyExpenseTable extends Component
         $dateEnd = end($exDateRange);
 
         $expenses = Expense::query()
-                        ->whereBetween('date', [$dateStart, $dateEnd])
-                        ->latest()
-                        ->with('category')
-                        ->paginate(20);
+                    ->byCategory($this->filter_category_id)
+                    ->whereBetween('date', [$dateStart, $dateEnd])
+                    ->latest()
+                    ->with('category')
+                    ->paginate(20);
 
-        $total_amount = Expense::whereBetween('date', [$dateStart, $dateEnd])->sum('amount');
+        $total_amount = Expense::query()
+                        ->byCategory($this->filter_category_id)
+                        ->whereBetween('date', [$dateStart, $dateEnd])
+                        ->sum('amount');
 
         $categories = Category::orderBy('name', 'asc')->get();
 

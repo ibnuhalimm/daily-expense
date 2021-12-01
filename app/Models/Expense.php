@@ -57,4 +57,21 @@ class Expense extends Model
 
         return $query->whereBetween('date', [ $from, $to ])->sum('amount');
     }
+
+    /**
+     * Query to filter by category
+     * If null, then return all
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  int|null  $categoryId
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function scopeByCategory($query, $categoryId = null)
+    {
+        if (empty($categoryId)) {
+            return $query;
+        }
+
+        return $query->where('category_id', $categoryId);
+    }
 }
