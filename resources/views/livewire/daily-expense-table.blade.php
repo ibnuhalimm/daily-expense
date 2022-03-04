@@ -166,22 +166,19 @@
             </div>
             <div class="col-span-6 sm:col-span-4 mb-6">
                 <x-jet-label for="category_id" value="{{ __('Category') }}" />
-                <div wire:ignore>
-                    <x-form.select wire:model.defer="category_id" id="category_id">
-                        <option value="">- Category -</option>
-
-                        @if (!empty($category_name))
-                            <option value="{{ $category_id }}" selected>
-                                {{ $category_name }}
-                            </option>
-                        @endif
-
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">
+                <div class="mt-2 w-full h-36 px-4 py-2 overflow-y-auto border border-solid border-gray-300 rounded-lg">
+                    @foreach ($categories as $category)
+                        <div class="mb-2">
+                            @if ($category_id == $category->id)
+                                <input id="category_{{ $category->id }}" type="radio" class="mt-1" name="category_id" wire:model.defer="category_id" value="{{ $category->id }}" />
+                            @else
+                                <input id="category_{{ $category->id }}" type="radio" class="mt-1" name="category_id" wire:model.defer="category_id" value="{{ $category->id }}" checked="true" />
+                            @endif
+                            <label for="category_{{ $category->id }}" class="ml-1">
                                 {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </x-form.select>
+                            </label>
+                        </div>
+                    @endforeach
                 </div>
                 <x-jet-input-error for="category_id" class="mt-2" />
             </div>
@@ -280,18 +277,18 @@
         });
 
 
-        $('#category_id').select2({
-            width: 'resolve'
-        });
+        // $('#category_id').select2({
+        //     width: 'resolve'
+        // });
 
-        $('#category_id').on('select2:select', function (e) {
-            const data = e.params.data;
-            @this.set('category_id', data.id);
-        });
+        // $('#category_id').on('select2:select', function (e) {
+        //     const data = e.params.data;
+        //     @this.set('category_id', data.id);
+        // });
 
-        $('#category_id').on('select2:unselect', function (e) {
-            @this.set('category_id', null);
-        });
+        // $('#category_id').on('select2:unselect', function (e) {
+        //     @this.set('category_id', null);
+        // });
 
         Livewire.on('expenseFetched', function (category) {
             $('#category_id').trigger('change');
