@@ -169,15 +169,17 @@
             </div>
             <div class="col-span-6 sm:col-span-4 mb-6">
                 <x-jet-label for="category_id" value="{{ __('Category') }}" />
-                <div class="mt-2 w-full h-36 px-4 py-2 overflow-y-auto border border-solid border-gray-300 rounded-lg">
-                    @if (!empty($category_id) && !empty($category_name))
+                @if (!empty($category_id) && !empty($category_name))
+                    <div class="mt-2 px-4">
                         <div class="mb-2">
                             <input id="selected_category_{{ $category_id }}" type="radio" class="mt-1" name="category_id" wire:model.defer="category_id" value="{{ $category_id }}" checked />
                             <label for="category_{{ $category_id }}" class="ml-1">
                                 {{ $category_name }}
                             </label>
                         </div>
-                    @endif
+                    </div>
+                @endif
+                <div class="mt-2 w-full h-36 px-4 py-2 overflow-y-auto border border-solid border-gray-300 rounded-lg">
                     @foreach ($categories as $category)
                         @if ($category_id == $category->id)
                             @php
