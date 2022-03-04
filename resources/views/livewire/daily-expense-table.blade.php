@@ -170,17 +170,27 @@
             <div class="col-span-6 sm:col-span-4 mb-6">
                 <x-jet-label for="category_id" value="{{ __('Category') }}" />
                 <div class="mt-2 w-full h-36 px-4 py-2 overflow-y-auto border border-solid border-gray-300 rounded-lg">
-                    @foreach ($categories as $category)
+                    @if (!empty($category_id) && !empty($category_name))
                         <div class="mb-2">
-                            @if ($category_id == $category->id)
-                                <input id="category_{{ $category->id }}" type="radio" class="mt-1" name="category_id" wire:model.defer="category_id" value="{{ $category->id }}" />
-                            @else
-                                <input id="category_{{ $category->id }}" type="radio" class="mt-1" name="category_id" wire:model.defer="category_id" value="{{ $category->id }}" checked="true" />
-                            @endif
-                            <label for="category_{{ $category->id }}" class="ml-1">
-                                {{ $category->name }}
+                            <input id="selected_category_{{ $category_id }}" type="radio" class="mt-1" name="category_id" wire:model.defer="category_id" value="{{ $category_id }}" checked />
+                            <label for="category_{{ $category_id }}" class="ml-1">
+                                {{ $category_name }}
                             </label>
                         </div>
+                    @endif
+                    @foreach ($categories as $category)
+                        @if ($category_id == $category->id)
+                            @php
+                                continue;
+                            @endphp
+                        @else
+                            <div class="mb-2">
+                                <input id="category_{{ $category->id }}" type="radio" class="mt-1" name="category_id" wire:model.defer="category_id" value="{{ $category->id }}" />
+                                <label for="category_{{ $category->id }}" class="ml-1">
+                                    {{ $category->name }}
+                                </label>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
                 <x-jet-input-error for="category_id" class="mt-2" />
