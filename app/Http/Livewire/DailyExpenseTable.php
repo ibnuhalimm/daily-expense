@@ -264,11 +264,12 @@ class DailyExpenseTable extends Component
         $dateEnd = end($exDateRange);
 
         $expenses = Expense::query()
-                    ->byCategory($this->filter_category_id)
-                    ->whereBetween('date', [$dateStart, $dateEnd])
-                    ->latest()
-                    ->with('category')
-                    ->paginate(20);
+            ->byCategory($this->filter_category_id)
+            ->whereBetween('date', [$dateStart, $dateEnd])
+            ->with('category')
+            ->orderBy('date', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
 
         $total_amount = Expense::query()
                         ->byCategory($this->filter_category_id)

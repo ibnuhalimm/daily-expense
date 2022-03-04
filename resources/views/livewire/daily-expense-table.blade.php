@@ -60,6 +60,9 @@
                                         </td>
                                         <td class="py-2 px-1">
                                             {{ $expense->description }}
+                                            <span class="block whitespace-nowrap mt-1 text-xs text-gray-600">
+                                                {{ $expense->date->format('d M Y') }}
+                                            </span>
                                         </td>
                                         <td class="py-2 px-1">
                                             Rp {{ number_format($expense->amount, 0, ',', '.') }},-
