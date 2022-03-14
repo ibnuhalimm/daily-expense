@@ -11,7 +11,10 @@
                             <x-select wire:model.lazy="month">
                                 <option value="" disabled>- Month -</option>
                                 @for ($month = 1; $month <= 12; $month++)
-                                    <option value="{{ ($month < 10) ? '0' . $month : $month }}">
+                                    @php
+                                        $monthWithZero = ($month < 10) ? '0' . $month : $month;
+                                    @endphp
+                                    <option value="{{ $monthWithZero }}" @if ($monthWithZero == date('m')) selected @endif>
                                         {{ strftime('%B', strtotime('2020-' . $month . '-01')) }}
                                     </option>
                                 @endfor
