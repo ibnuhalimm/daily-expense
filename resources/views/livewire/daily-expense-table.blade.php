@@ -40,10 +40,10 @@
                             <x-tr-head>
                                 <x-th class="w-20 pl-6">#</x-th>
                                 <x-th>
-                                    {{ __('Description') }}
+                                    {{ __('Amount') }}
                                 </x-th>
                                 <x-th>
-                                    {{ __('Amount') }}
+                                    {{ __('Description') }}
                                 </x-th>
                                 <x-th>
                                     {{ __('Category') }}
@@ -65,13 +65,13 @@
                                             {{ $idx + $expenses->firstItem() }}
                                         </td>
                                         <td class="py-2 px-1">
+                                            Rp {{ number_format($expense->amount, 0, ',', '.') }},-
+                                        </td>
+                                        <td class="py-2 px-1">
                                             {{ $expense->description }}
                                             <span class="block whitespace-nowrap mt-1 text-xs text-gray-600">
                                                 {{ $expense->date->format('d M Y') }}
                                             </span>
-                                        </td>
-                                        <td class="py-2 px-1">
-                                            Rp {{ number_format($expense->amount, 0, ',', '.') }},-
                                         </td>
                                         <td class="py-2 px-1">
                                             {{ $expense->category->name }}
@@ -122,7 +122,7 @@
 
             <form action="#" method="post" wire:submit.prevent="storeExpense">
             <div class="col-span-6 sm:col-span-4 mb-6">
-                <x-jet-label for="date" value="{{ __('Date') }}" />
+                <x-jet-label for="date" value="{{ __('Date') }}" required />
                 <div class="w-full mt-1">
                     <div wire:ignore>
                         <x-jet-input id="store_date" type="date" class="mt-1 block w-full" wire:model.defer="store_date" autocomplete="off" />
@@ -131,17 +131,17 @@
                 <x-jet-input-error for="store_date" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-4 mb-6">
-                <x-jet-label for="description" value="{{ __('Description') }}" />
-                <x-jet-input id="description" type="text" class="mt-1 block w-full" wire:model.defer="description" autocomplete="description" />
-                <x-jet-input-error for="description" class="mt-2" />
-            </div>
-            <div class="col-span-6 sm:col-span-4 mb-6">
-                <x-jet-label for="amount" value="{{ __('Amount') }}" />
+                <x-jet-label for="amount" value="{{ __('Amount') }}" required />
                 <x-jet-input id="amount" type="number" class="mt-1 block w-full" wire:model.defer="amount" autocomplete="amount" />
                 <x-jet-input-error for="amount" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-4 mb-6">
-                <x-jet-label for="category_id" value="{{ __('Category') }}" />
+                <x-jet-label for="description" value="{{ __('Description') }}" required />
+                <x-jet-input id="description" type="text" class="mt-1 block w-full" wire:model.defer="description" autocomplete="description" />
+                <x-jet-input-error for="description" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-4 mb-6">
+                <x-jet-label for="category_id" value="{{ __('Category') }}" required />
                 @if (!empty($category_id) && !empty($category_name))
                     <div class="mt-2 px-4">
                         <div class="mb-2">
