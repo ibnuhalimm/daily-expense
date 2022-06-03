@@ -13,8 +13,8 @@
                             </x-jet-button>
                         </div>
                         <div class="w-full sm:w-2/3 lg:w-1/2 xl:w-2/5">
-                            <div class="flex flex-row item-center justify-between gap-4">
-                                <div class="w-1/2">
+                            <div class="flex flex-col item-center justify-between gap-4 sm:flex-row">
+                                <div class="w-full sm:w-1/2">
                                     <div wire:ignore>
                                         <x-form.select wire:model.defer="filter_category_id" id="filter_category_id">
                                             <option value="">- {{ __('All Categories') }} -</option>
@@ -27,11 +27,16 @@
                                         </x-form.select>
                                     </div>
                                 </div>
-                                <div class="w-1/2" wire:ignore>
+                                <div class="w-full sm:w-1/2" wire:ignore>
                                     <x-jet-input type="date" wire:model.defer="filter_date_range" id="filter_date_range"  autocomplete="off" />
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="mt-6 text-center py-4 px-6">
+                        <p class="font-bold">
+                            {{ __('Total Amount') }} : <span class="text-red-600">Rp {{ number_format($total_amount, 0, ',', '.') }},-</span>
+                        </p>
                     </div>
                 </div>
                 <div class="mb-0">
@@ -98,9 +103,6 @@
                         {!! $expenses->links() !!}
                     </div>
 
-                </div>
-                <div class="text-center py-4 px-6">
-                    {{ __('Total Amount') }} : <span class="text-red-600">Rp {{ number_format($total_amount, 0, ',', '.') }},-</span>
                 </div>
             </div>
         </div>
