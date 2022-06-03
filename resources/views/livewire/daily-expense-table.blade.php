@@ -55,7 +55,7 @@
                             @if ($expenses->isEmpty())
                                 <x-tr-body class="hover:bg-gray-100">
                                     <td class="py-3 px-6" colspan="5">
-                                        No data available
+                                        {{ __('No data available') }}
                                     </td>
                                 </x-tr-body>
                             @else
@@ -100,7 +100,7 @@
 
                 </div>
                 <div class="text-center py-4 px-6">
-                    Total Amount : <span class="text-red-600">Rp {{ number_format($total_amount, 0, ',', '.') }},-</span>
+                    {{ __('Total Amount') }} : <span class="text-red-600">Rp {{ number_format($total_amount, 0, ',', '.') }},-</span>
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@
 
     <x-jet-dialog-modal wire:model="is_create_modal_show" maxWidth="sm">
         <x-slot name="title">
-            @if ($is_edit_mode === true) Edit Expense @else New Expense @endif
+            @if ($is_edit_mode === true) {{ __('Edit Expense') }} @else {{ __('New Expense') }} @endif
         </x-slot>
 
         <x-slot name="content">
@@ -127,41 +127,8 @@
                     <div wire:ignore>
                         <x-jet-input id="store_date" type="date" class="mt-1 block w-full" wire:model.defer="store_date" autocomplete="off" />
                     </div>
-                    {{-- <div class="w-1/4 mr-1">
-                        <x-select wire:model.defer="day">
-                            <option value="" disabled>- Day -</option>
-                            @for ($day = 1; $day <= 31; $day++)
-                                <option value="{{ ($day < 10) ? '0' . $day : $day }}">
-                                    {{ $day }}
-                                </option>
-                            @endfor
-                        </x-select>
-                    </div>
-                    <div class="w-1/3 mx-1">
-                        <x-select wire:model.defer="month">
-                            <option value="" disabled>- Month -</option>
-                            @for ($month = 1; $month <= 12; $month++)
-                                <option value="{{ ($month < 10) ? '0' . $month : $month }}">
-                                    {{ strftime('%B', strtotime('2020-' . $month . '-01')) }}
-                                </option>
-                            @endfor
-                        </x-select>
-                    </div>
-                    <div class="w-1/3 ml-1">
-                        <x-select wire:model.defer="year">
-                            <option value="" disabled>- Year -</option>
-                            @for ($year = date('Y'); $year >= (date('Y') - 1); $year--)
-                                <option value="{{ $year }}">
-                                    {{ $year }}
-                                </option>
-                            @endfor
-                        </x-select>
-                    </div> --}}
                 </div>
                 <x-jet-input-error for="store_date" class="mt-2" />
-                {{-- <x-jet-input-error for="day" class="mt-2" />
-                <x-jet-input-error for="month" class="mt-2" />
-                <x-jet-input-error for="year" class="mt-2" /> --}}
             </div>
             <div class="col-span-6 sm:col-span-4 mb-6">
                 <x-jet-label for="description" value="{{ __('Description') }}" />

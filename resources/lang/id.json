@@ -12,6 +12,7 @@
     "Monthly Expense Category": "Kategori Pengeluaran Bulanan",
     "Daily Expense Data": "Data Pengeluaran Harian",
     "New Expense": "Pengeluaran Baru",
+    "Edit Expense": "Edit Pengeluaran",
     "All Categories": "Semua Kategori",
     "Description": "Deskripsi",
     "Amount": "Nominal",
@@ -33,5 +34,6 @@
     "Are you sure you want to delete this data?": "Apakah Anda yakin ingin menghapus data ini?",
     "Category Name": "Nama Kategori",
     "Profile": "Profil",
-    "Manage Account": "Kelola Akun"
+    "Manage Account": "Kelola Akun",
+    "Total Amount": "Jumlah Total"
 }
