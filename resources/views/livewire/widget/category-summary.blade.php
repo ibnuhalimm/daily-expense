@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <x-card-content>
             <h3 class="text-lg font-medium text-gray-900 -mt-6">
-                Monthly Expense Category
+                {{ __('Monthly Expense Category') }}
             </h3>
             <div class="mt-6 w-full">
                 <div>

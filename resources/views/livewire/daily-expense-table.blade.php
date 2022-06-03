@@ -4,12 +4,12 @@
             <div class="bg-white border-b border-gray-200">
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900">
-                        Daily Expense Data
+                        {{ __('Daily Expense Data') }}
                     </h3>
                     <div class="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
                         <div class="w-full sm:w-1/3 lg:w-1/2 xl:w-3/5">
                             <x-jet-button wire:click="createExpense">
-                                New Expense
+                                {{ __('New Expense') }}
                             </x-jet-button>
                         </div>
                         <div class="w-full sm:w-2/3 lg:w-1/2 xl:w-2/5">
@@ -17,7 +17,7 @@
                                 <div class="w-1/2">
                                     <div wire:ignore>
                                         <x-form.select wire:model.defer="filter_category_id" id="filter_category_id">
-                                            <option value="">- All Categories -</option>
+                                            <option value="">- {{ __('All Categories') }} -</option>
 
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}">
@@ -39,9 +39,15 @@
                         <thead>
                             <x-tr-head>
                                 <x-th class="w-20 pl-6">#</x-th>
-                                <x-th>Description</x-th>
-                                <x-th>Amount</x-th>
-                                <x-th>Category</x-th>
+                                <x-th>
+                                    {{ __('Description') }}
+                                </x-th>
+                                <x-th>
+                                    {{ __('Amount') }}
+                                </x-th>
+                                <x-th>
+                                    {{ __('Category') }}
+                                </x-th>
                                 <x-th class="w-32">&nbsp;</x-th>
                             </x-tr-head>
                         </thead>
@@ -201,15 +207,15 @@
 
         <x-slot name="footer">
             <x-jet-secondary-button type="button" wire:click="$toggle('is_create_modal_show')" wire:loading.attr="disabled" wire:target="storeExpense">
-                Cancel
+                {{ __('Cancel') }}
             </x-jet-secondary-button>
 
             <x-jet-button type="submit" class="ml-2" wire:loading.attr="disabled" wire:target="storeExpense">
                 <span wire:loading.remove wire:target="storeExpense">
-                    Save
+                    {{ __('Save') }}
                 </span>
                 <span wire:loading wire:target="storeExpense">
-                    Saving...
+                    {{ __('Saving') }}...
                 </span>
             </x-jet-button>
             </form>
@@ -219,7 +225,7 @@
 
     <x-jet-confirmation-modal wire:model="is_delete_modal_show" maxWidth="sm">
         <x-slot name="title">
-            Delete Expense
+            {{ __('Delete Expense') }}
         </x-slot>
 
         @if (session('delete-alert-body'))
@@ -229,20 +235,20 @@
         @endif
 
         <x-slot name="content">
-            Are you sure you want to delete this expense?
+            {{ __('Are you sure you want to delete this expense?') }}
         </x-slot>
 
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="$toggle('is_delete_modal_show')" wire:loading.attr="disabled" wire:target="destroyExpense">
-                No, Close
+                {{ __('No, Close') }}
             </x-jet-secondary-button>
 
             <x-jet-danger-button class="ml-2" wire:click="destroyExpense" wire:loading.attr="disabled" wire:target="destroyExpense">
                 <span wire:loading.remove wire:target="destroyExpense">
-                    Yes, Delete
+                    {{ __('Yes, Delete') }}
                 </span>
                 <span wire:loading wire:target="destroyExpense">
-                    Deleting...
+                    {{ __('Deleting') }}...
                 </span>
             </x-jet-danger-button>
         </x-slot>

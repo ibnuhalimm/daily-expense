@@ -4,12 +4,12 @@
             <div class="bg-white border-b border-gray-200">
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900">
-                        Categories
+                        {{ __('Categories') }}
                     </h3>
                     <div class="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
                         <div class="w-full sm:w-3/5 lg:w-2/3 xl:w-3/4">
                             <x-jet-button wire:click="createCategory">
-                                New Category
+                                {{ __('New Category') }}
                             </x-jet-button>
                         </div>
                         <div class="w-full sm:w-2/5 lg:w-1/3 xl:w-1/4">
@@ -22,7 +22,9 @@
                         <thead>
                             <x-tr-head>
                                 <x-th class="w-20 pl-6">#</x-th>
-                                <x-th>Name</x-th>
+                                <x-th>
+                                    {{ __('Name') }}
+                                </x-th>
                                 <x-th class="w-32">&nbsp;</x-th>
                             </x-tr-head>
                         </thead>
@@ -30,7 +32,7 @@
                             @if ($categories->isEmpty())
                                 <x-tr-body class="hover:bg-gray-100">
                                     <td class="py-3 px-6" colspan="3">
-                                        No data available
+                                        {{ __('No data available') }}
                                     </td>
                                 </x-tr-body>
                             @else
@@ -72,7 +74,7 @@
 
     <x-jet-dialog-modal wire:model="isCreateModalShow" maxWidth="sm">
         <x-slot name="title">
-            @if ($isEditMode === true) Edit Category @else New Category @endif
+            @if ($isEditMode === true) {{ __('Edit Category') }} @else {{ __('New Category') }} @endif
         </x-slot>
 
         <x-slot name="content">
@@ -93,15 +95,15 @@
 
         <x-slot name="footer">
             <x-jet-secondary-button type="button" wire:click="$toggle('isCreateModalShow')" wire:loading.attr="disabled" wire:target="storeCategory">
-                Cancel
+                {{ __('Cancel') }}
             </x-jet-secondary-button>
 
             <x-jet-button type="submit" class="ml-2" wire:loading.attr="disabled" wire:target="storeCategory">
                 <span wire:loading.remove wire:target="storeCategory">
-                    Save
+                    {{ __('Save') }}
                 </span>
                 <span wire:loading wire:target="storeCategory">
-                    Saving...
+                    {{ __('Saving') }}...
                 </span>
             </x-jet-button>
             </form>
@@ -111,7 +113,7 @@
 
     <x-jet-confirmation-modal wire:model="isDeleteModalShow" maxWidth="sm">
         <x-slot name="title">
-            Delete Category
+            {{ __('Delete Category') }}
         </x-slot>
 
         @if (session('delete-alert-body'))
@@ -121,20 +123,20 @@
         @endif
 
         <x-slot name="content">
-            Are you sure you want to delete this data?
+            {{ __('Are you sure you want to delete this data?') }}
         </x-slot>
 
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="$toggle('isDeleteModalShow')" wire:loading.attr="disabled" wire:target="destroyCategory">
-                No, Close
+                {{ __('No, Close') }}
             </x-jet-secondary-button>
 
             <x-jet-danger-button class="ml-2" wire:click="destroyCategory" wire:loading.attr="disabled" wire:target="destroyCategory">
                 <span wire:loading.remove wire:target="destroyCategory">
-                    Yes, Delete
+                    {{ __('Yes, Delete') }}
                 </span>
                 <span wire:loading wire:target="destroyCategory">
-                    Deleting...
+                    {{ __('Deleting') }}...
                 </span>
             </x-jet-danger-button>
         </x-slot>

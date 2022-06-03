@@ -20,9 +20,9 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'Ibnu Halim Mustofa',
-                'email' => 'ibnuhalimm@gmail.com',
+                'email' => 'ibnuhalim@pm.me',
                 'email_verified_at' => new DateTime(),
-                'password' => bcrypt('1234'),
+                'password' => bcrypt('password'),
                 'created_at' => new DateTime(),
                 'updated_at' => new DateTime()
             ]
