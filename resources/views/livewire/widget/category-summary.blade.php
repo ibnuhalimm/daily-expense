@@ -9,13 +9,10 @@
                     <div class="flex flex-row items-center gap-4">
                         <div class="w-40">
                             <x-select wire:model.lazy="month">
-                                <option value="" disabled>- Month -</option>
-                                @for ($month = 1; $month <= 12; $month++)
-                                    @php
-                                        $monthWithZero = ($month < 10) ? '0' . $month : $month;
-                                    @endphp
-                                    <option value="{{ $monthWithZero }}" @if ($monthWithZero == date('m')) selected @endif>
-                                        {{ strftime('%B', strtotime('2020-' . $month . '-01')) }}
+                                <option value="" disabled>- {{ __('Month') }} -</option>
+                                @for ($monthInteger = 1; $monthInteger <= 12; $monthInteger++)
+                                    <option value="{{ $monthInteger }}">
+                                        {{ __(strftime('%B', strtotime('2020-' . $monthInteger . '-01'))) }}
                                     </option>
                                 @endfor
                             </x-select>

@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <x-card-content>
             <h3 class="text-lg font-medium text-gray-900 -mt-6">
-                {{ __('Daily Expense in') }} {{ strftime('%B %Y') }}
+                {{ __('Daily Expense in') }} {{ __(strftime('%B')) . ' ' . strftime('%Y') }}
             </h3>
             {{-- <div class="w-full flex flex-row items-center justify-end mb-6">
                 <div class="w-1/2 lg:w-1/6 mx-1">
