@@ -28,7 +28,7 @@ class Table extends Component
 
 
     protected $validationAttributes = [
-        'name' => __('Category Name')
+        'name' => 'Nama Kategori'
     ];
 
 

@@ -50,8 +50,8 @@ class DailyExpenseTable extends Component
 
 
     protected $validationAttributes = [
-        'category_id' => __('Category Name'),
-        'store_date' => __('Date')
+        'category_id' => 'Nama Kategori',
+        'store_date' => 'Tanggal'
     ];
 
 
