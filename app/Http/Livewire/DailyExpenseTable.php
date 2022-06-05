@@ -50,8 +50,8 @@ class DailyExpenseTable extends Component
 
 
     protected $validationAttributes = [
-        'category_id' => 'Category Name',
-        'store_date' => 'Date'
+        'category_id' => __('Category Name'),
+        'store_date' => __('Date')
     ];
 
 
@@ -169,7 +169,7 @@ class DailyExpenseTable extends Component
         } catch (\Throwable $th) {
             report($th);
 
-            session()->flash('create-alert-body', 'Oops, something went wrong');
+            session()->flash('create-alert-body', __('Oops, something went wrong'));
         }
     }
 
@@ -247,7 +247,7 @@ class DailyExpenseTable extends Component
 
         } catch (\Throwable $th) {
             report($th);
-            session()->flash('delete-alert-body', 'Oops, something went wrong');
+            session()->flash('delete-alert-body', __('Oops, something went wrong'));
 
         }
     }

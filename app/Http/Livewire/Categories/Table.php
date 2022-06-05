@@ -21,13 +21,14 @@ class Table extends Component
 
     protected $rules = [
         'name' => [
-            'required', 'max:20'
+            'required',
+            'max:100'
         ]
     ];
 
 
     protected $validationAttributes = [
-        'name' => 'Category Name'
+        'name' => __('Category Name')
     ];
 
 
@@ -106,7 +107,7 @@ class Table extends Component
         } catch (\Throwable $th) {
             report($th);
 
-            session()->flash('create-alert-body', 'Oops, something went wrong');
+            session()->flash('create-alert-body', __('Oops, something went wrong'));
         }
     }
 
@@ -137,7 +138,7 @@ class Table extends Component
 
         } catch (\Throwable $th) {
             report($th);
-            session()->flash('delete-alert-body', 'Oops, something went wrong');
+            session()->flash('delete-alert-body', __('Oops, something went wrong'));
         }
     }
 

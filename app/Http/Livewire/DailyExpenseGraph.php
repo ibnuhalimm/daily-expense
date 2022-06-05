@@ -50,8 +50,6 @@ class DailyExpenseGraph extends Component
             'expense_day' => $expense_day
         ];
 
-        // dd($expense_day);
-
         return view('livewire.daily-expense-graph', $data);
     }
 }
