@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Categories;
 
+use App\Actions\Category\UpdateOtherSortNumber;
 use App\Models\Category;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,18 +18,24 @@ class Table extends Component
 
     public $categoryId;
     public $name;
+    public $sort_number;
 
 
     protected $rules = [
         'name' => [
             'required',
             'max:100'
+        ],
+        'sort_number' => [
+            'integer',
+            'min:0'
         ]
     ];
 
 
     protected $validationAttributes = [
-        'name' => 'Nama Kategori'
+        'name' => 'Nama Kategori',
+        'sort_number' => 'Nomor Urut'
     ];
 
 
@@ -38,6 +45,8 @@ class Table extends Component
         $this->isEditMode = false;
         $this->isCreateModalShow = false;
         $this->isDeleteModalShow = false;
+
+        $this->sort_number = 1;
     }
 
 
@@ -57,6 +66,7 @@ class Table extends Component
     {
         if ($value === false) {
             $this->reset('name');
+            $this->reset('sort_number');
             $this->resetErrorBag();
 
             if ($this->isEditMode === true) {
@@ -89,19 +99,25 @@ class Table extends Component
         try {
 
             if ($this->isEditMode === true) {
-                Category::where('id', $this->categoryId)
-                    ->update([
-                        'name' => $this->name
-                    ]);
+                $category = Category::query()
+                    ->where('id', $this->categoryId)
+                    ->first();
+
+                $category->name = $this->name;
+                $category->sort_number = $this->sort_number;
+                $category->save();
 
             } else {
-                Category::create([
-                    'name' => $this->name
+                $category = Category::create([
+                    'name' => $this->name,
+                    'sort_number' => $this->sort_number
                 ]);
 
             }
 
-            $this->reset('categoryId', 'name');
+            UpdateOtherSortNumber::make()->handle($category, $this->sort_number);
+
+            $this->reset('categoryId', 'name', 'sort_number');
             $this->isCreateModalShow = false;
 
         } catch (\Throwable $th) {
@@ -120,6 +136,7 @@ class Table extends Component
         $this->isEditMode = true;
         $this->categoryId = $category->id;
         $this->name = $category->name;
+        $this->sort_number = $category->sort_number;
     }
 
 
@@ -146,9 +163,10 @@ class Table extends Component
     public function render()
     {
         $categories = Category::query()
-                            ->search($this->keyword)
-                            ->orderBy('name', 'asc')
-                            ->paginate(10);
+            ->search($this->keyword)
+            ->orderBy('sort_number', 'asc')
+            ->orderBy('name', 'asc')
+            ->paginate(20);
 
         return view('livewire.categories.table', compact('categories'));
     }

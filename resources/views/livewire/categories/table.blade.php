@@ -39,7 +39,7 @@
                                 @foreach ($categories as $idx => $category)
                                     <x-tr-body>
                                         <td class="py-2 px-1 pl-6">
-                                            {{ $idx + $categories->firstItem() }}
+                                            {{ $category->sort_number }}
                                         </td>
                                         <td class="py-2 px-1">
                                             {{ $category->name }}
@@ -90,6 +90,11 @@
                 <x-jet-label for="name" value="{{ __('Category Name') }}" required />
                 <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="name" autocomplete="false" />
                 <x-jet-input-error for="name" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-4 mb-6">
+                <x-jet-label for="name" value="{{ __('Nomor Urut') }}" />
+                <x-jet-input id="sort_number" type="number" class="mt-1 block w-full" wire:model.defer="sort_number" autocomplete="false" min="0" />
+                <x-jet-input-error for="sort_number" class="mt-2" />
             </div>
         </x-slot>
 

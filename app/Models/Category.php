@@ -12,8 +12,10 @@ class Category extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name'
+        'name',
+        'sort_number'
     ];
+
 
     public function scopeSearch($query, $keyword = null)
     {
@@ -33,15 +35,15 @@ class Category extends Model
         $categoryTable = (new Category())->getTable();
 
         $expenses = DB::table($expenseTable)
-                    ->select(DB::raw("{$expenseTable}.category_id, SUM({$expenseTable}.amount) AS amount_sum"))
-                    ->whereBetween("{$expenseTable}.date", [$dateStart, $dateEnd])
-                    ->groupBy(DB::raw("{$expenseTable}.category_id"));
+            ->select(DB::raw("{$expenseTable}.category_id, SUM({$expenseTable}.amount) AS amount_sum"))
+            ->whereBetween("{$expenseTable}.date", [$dateStart, $dateEnd])
+            ->groupBy(DB::raw("{$expenseTable}.category_id"));
 
         $orderedWithCategories = DB::table($categoryTable)
-                                ->joinSub($expenses, 'expenses', function ($join) use ($categoryTable) {
-                                    $join->on("{$categoryTable}.id", '=', 'expenses.category_id');
-                                })
-                                ->orderBy("expenses.amount_sum", 'desc');
+            ->joinSub($expenses, 'expenses', function ($join) use ($categoryTable) {
+                $join->on("{$categoryTable}.id", '=', 'expenses.category_id');
+            })
+            ->orderBy("{$categoryTable}.sort_number", 'asc');
 
         return $orderedWithCategories->get();
     }
