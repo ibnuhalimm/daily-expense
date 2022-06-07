@@ -48,7 +48,7 @@
                                     {{ __('Amount') }}
                                 </x-th>
                                 <x-th>
-                                    {{ __('Description') }}
+                                    {{ __('expense.Description') }}
                                 </x-th>
                                 <x-th>
                                     {{ __('Category') }}
@@ -138,7 +138,7 @@
                 <x-jet-input-error for="amount" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-4 mb-6">
-                <x-jet-label for="description" value="{{ __('Description') }}" required />
+                <x-jet-label for="description" value="{{ __('expense.Description') }}" required />
                 <x-jet-input id="description" type="text" class="mt-1 block w-full" wire:model.defer="description" autocomplete="description" />
                 <x-jet-input-error for="description" class="mt-2" />
             </div>
