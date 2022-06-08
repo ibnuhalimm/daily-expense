@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Categories;
 
-use App\Actions\Category\UpdateOtherSortNumber;
+use App\Actions\Category\UpdateSortNumberBatch;
 use App\Models\Category;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -104,18 +104,16 @@ class Table extends Component
                     ->first();
 
                 $category->name = $this->name;
-                $category->sort_number = $this->sort_number;
                 $category->save();
 
             } else {
                 $category = Category::create([
-                    'name' => $this->name,
-                    'sort_number' => $this->sort_number
+                    'name' => $this->name
                 ]);
 
             }
 
-            UpdateOtherSortNumber::make()->handle($category, $this->sort_number);
+            UpdateSortNumberBatch::make()->handle($category, $this->sort_number);
 
             $this->reset('categoryId', 'name', 'sort_number');
             $this->isCreateModalShow = false;
