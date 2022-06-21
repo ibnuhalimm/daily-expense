@@ -276,7 +276,10 @@ class DailyExpenseTable extends Component
                         ->whereBetween('date', [$dateStart, $dateEnd])
                         ->sum('amount');
 
-        $categories = Category::orderBy('name', 'asc')->get();
+        $categories = Category::query()
+            ->orderBy('sort_number', 'asc')
+            ->orderBy('name', 'asc')
+            ->get();
 
         return view('livewire.daily-expense-table', compact('expenses', 'total_amount', 'categories'));
     }
