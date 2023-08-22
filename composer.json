@@ -18,7 +18,6 @@
         "laravel/tinker": "^2.0",
         "livewire/livewire": "^2.0",
         "lorisleiva/laravel-actions": "^2.4",
-        "spatie/data-transfer-object": "^3.8",
         "spatie/laravel-db-snapshots": "^2.0"
     },
     "require-dev": {
