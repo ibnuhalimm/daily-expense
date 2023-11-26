@@ -128,4 +128,13 @@ return [
         ],
     ],
     'attributes'           => [],
+
+    'password' => [
+        'mixed' => ':attribute harus berisi setidaknya satu huruf kapital dan satu huruf kecil.',
+        'letters' => ':attribute harus berisi setidaknya satu huruf.',
+        'symbols' => ':attribute harus berisi setidaknya satu simbol.',
+        'numbers' => ':attribute harus berisi setidaknya satu angka.',
+        'uncompromised' => ':attribute yang diberikan telah muncul dalam kebocoran data. Pilihlah :attribute yang berbeda.',
+    ]
+
 ];

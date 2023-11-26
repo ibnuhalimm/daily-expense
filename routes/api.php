@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\ChangePasswordController;
 use App\Http\Controllers\Api\V1\ForgotPasswordController;
 use App\Http\Controllers\Api\V1\LoginController;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ Route::group([
 
     Route::post('auth/login', LoginController::class);
     Route::post('auth/forgot-password', ForgotPasswordController::class);
+    Route::post('change-password', ChangePasswordController::class)->middleware('auth:sanctum');
 
 });
 
