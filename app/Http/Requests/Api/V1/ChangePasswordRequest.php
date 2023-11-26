@@ -31,10 +31,10 @@ class ChangePasswordRequest extends FormRequest
             'new_password' => [
                 'required',
                 'confirmed',
-                // Password::min(8)
-                //     ->letters()
-                //     ->numbers()
-                //     ->uncompromised()
+                Password::min(8)
+                    ->letters()
+                    ->numbers()
+                    ->uncompromised()
             ]
         ];
     }
