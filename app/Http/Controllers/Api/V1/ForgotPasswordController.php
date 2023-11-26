@@ -30,7 +30,7 @@ class ForgotPasswordController extends Controller
         ]);
 
         if ($status === Password::RESET_LINK_SENT) {
-            return $this->apiResponse(200, 'Permintaan reset password terkirim. Silahkan periksa email Anda.');
+            return $this->apiResponse(200, trans('passwords.sent'));
         }
 
         throw ValidationException::withMessages([
