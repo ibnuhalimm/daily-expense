@@ -13,6 +13,7 @@
         "autoprefixer": "^10.4.0",
         "axios": "^0.24.0",
         "cross-env": "^7.0",
+        "jquery-mask-plugin": "^1.14.16",
         "laravel-mix": "^6.0.37",
         "lodash": "^4.17.19",
         "postcss": "^8.3.11",
@@ -21,6 +22,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "@tailwindcss/forms": "^0.3.4"
+        "@tailwindcss/forms": "^0.3.4",
+        "jquery": "^3.7.1"
     }
 }

@@ -134,7 +134,10 @@
             </div>
             <div class="col-span-6 sm:col-span-4 mb-6">
                 <x-jet-label for="amount" value="{{ __('Amount') }}" required />
-                <x-jet-input id="amount" type="number" class="mt-1 block w-full" wire:model.defer="amount" autocomplete="amount" />
+                <div class="flex flex-row items-center justify-between gap-x-2">
+                    <div class="text-gray-500 mr-1">Rp</div>
+                    <x-jet-input id="amount" type="text" class="rupiah mt-1 block w-full" wire:model.defer="amount" autocomplete="amount" />
+                </div>
                 <x-jet-input-error for="amount" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-4 mb-6">

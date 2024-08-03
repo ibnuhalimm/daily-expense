@@ -1,4 +1,5 @@
 window._ = require('lodash');
+require('jquery-mask-plugin');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -9,6 +10,17 @@ window._ = require('lodash');
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+try {
+
+    window.$ = window.jQuery = require('jquery');
+
+    require('jquery-mask-plugin');
+    $('.rupiah').mask('000.000.000.000.000', {reverse: true});
+
+} catch (error) {
+    console.log(error);
+}
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

@@ -39,6 +39,7 @@
 
         @stack('modals')
 
+        <script src="{{ asset('js/app.js?_=' . rand()) }}"></script>
         @stack('bottom_js')
     </body>
 </html>
