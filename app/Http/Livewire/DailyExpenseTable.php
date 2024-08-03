@@ -137,13 +137,15 @@ class DailyExpenseTable extends Component
 
         try {
 
+            $amount = str_replace('.', '', $this->amount);
+
             if ($this->is_edit_mode === true) {
                 Expense::where('id', $this->expense_id)
                     ->update([
                         'category_id' => $this->category_id,
                         'date' => $this->store_date,
                         'description' => $this->description,
-                        'amount' => $this->amount
+                        'amount' => $amount
                     ]);
 
             } else {
@@ -151,7 +153,7 @@ class DailyExpenseTable extends Component
                     'category_id' => $this->category_id,
                     'date' => $this->store_date,
                     'description' => $this->description,
-                    'amount' => $this->amount
+                    'amount' => $amount
                 ]);
 
             }
